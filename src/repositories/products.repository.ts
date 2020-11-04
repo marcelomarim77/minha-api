@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Repository, getConnection } from 'typeorm';
 
 import { Products } from '../entities/products.entity';
 
@@ -9,12 +9,19 @@ export class ProductsRepository extends Repository<Products> {
     }
 
     async findProductsById(id: number) {
-        id = 6;
         return await this.findOne({ productid: id });
     }
 
     async findProductsByName(name: string) {
-        return await this.findOne({ productname: name });
+//        return await this.find({ productname: name });
+
+        return await getConnection()
+            .createQueryBuilder()
+            .select("*")
+            .from(Products, "products")
+            .where("products.productname = :name", { name: name})
+//            .getSql();
+            .getMany();
     }
 
 }

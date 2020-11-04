@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Param, Get } from '@nestjs/common';
+
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,14 +11,14 @@ export class AppController {
     return this.appService.getAllProducts();
   }
 
-  @Get('/:productid')
-  async getProductsById(productid: number) {
-    return this.appService.getProductsById(productid);
+  @Get('/id/:id')
+  async getProductsById(@Param('id') id: number) {
+    return this.appService.getProductsById(id);
   }
 
-  @Get('/:productname')
-  async getProductsByName(productname: string) {
-    return this.appService.getProductsByName(productname);
+  @Get('/name/:name')
+  async getProductsByName(@Param('name') name: string) {
+    return this.appService.getProductsByName(name);
   }
 
 }
